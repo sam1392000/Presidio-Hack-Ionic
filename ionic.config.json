@@ -1,0 +1,7 @@
+{
+  "name": "presidioHack",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
