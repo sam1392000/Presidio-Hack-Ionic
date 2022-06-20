@@ -21,7 +21,15 @@ const routes: Routes = [
   {
     path: 'postview',
     loadChildren: () => import('./pages/postview/postview.module').then( m => m.PostviewPageModule)
-  }
+  },
+  {
+    path: 'add-post',
+    loadChildren: () => import('./pages/add-post/add-post.module').then( m => m.AddPostPageModule)
+  },
+  {
+    path: 'explore',
+    loadChildren: () => import('./pages/explore/explore.module').then( m => m.ExplorePageModule)
+  },
 
 
 ];

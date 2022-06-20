@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-explore',
@@ -7,9 +8,59 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExplorePage implements OnInit {
 
-  constructor() { }
+  postDetails: any[]=[];
+  noOfRows = 0;
 
-  ngOnInit() {
+  constructor(private postservice: PostService) { this.getExplorePosts();
+  }
+
+  getExplorePosts(){
+    this.postservice.getPublicPost().subscribe((res: any)=>{
+      console.log(res.data);
+
+      this.postDetails=res.data;
+      this.postDetails = this.shuffleArray();
+    });
+    // this.postDetails=this.shuffleArray();
+  }
+
+  isImage(url: string) {
+    if(url.includes('.mp4')){
+        return false;
+    }else{
+      return true;
+    }
+  }
+
+  loadThumbnail(url: string){
+    return url+'#t=2';
+  }
+
+  ngOnInit(): void {
+  }
+  // showPost(postId: string){
+
+  //   console.log(postId);
+
+  //   this.selected=postId;
+  //   // this.postservice.viewPost(postId);
+  // }
+
+  checkFormat(url: any,index: number)
+  {
+    if(!this.isImage(url))
+    {
+      return 'video-container';
+    }
+    return 'image-container';
+  }
+
+  shuffleArray(){
+  return  this.postDetails
+  .map(value => ({ value, sort: Math.random() }))
+  .sort((a, b) => a.sort - b.sort)
+  .map(({ value }) => value);
   }
 
 }
+
