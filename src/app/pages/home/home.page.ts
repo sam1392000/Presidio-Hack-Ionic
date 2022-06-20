@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Comments } from 'src/app/interfaces/comments';
-import { CommentServiceService } from 'src/app/services/comment-service.service';
-import { PostlistService } from 'src/app/services/postlist.service';
-import { Post } from '../../interfaces/post';
+import { Comments } from 'src/app/core/interfaces/comments';
+import { CommentServiceService } from 'src/app/core/services/comment-service.service';
+import { PostlistService } from 'src/app/core/services/postlist.service';
+import { Post } from '../../core/interfaces/post';
 import { PostviewPage } from '../postview/postview.page';
 
 enum Visibility{

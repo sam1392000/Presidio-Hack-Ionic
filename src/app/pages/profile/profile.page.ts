@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/interfaces/user';
-import { ApicallsService } from 'src/app/services/apicalls.service';
+import { User } from 'src/app/core/interfaces/user';
+import { ApicallsService } from 'src/app/core/services/apicalls.service';
 
 @Component({
   selector: 'app-profile',

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Comments } from 'src/app/interfaces/comments';
-import { Post } from 'src/app/interfaces/post';
-import { CommentServiceService } from 'src/app/services/comment-service.service';
-import { PostlistService } from 'src/app/services/postlist.service';
+import { Comments } from 'src/app/core/interfaces/comments';
+import { Post } from 'src/app/core/interfaces/post';
+import { CommentServiceService } from 'src/app/core/services/comment-service.service';
+import { PostlistService } from 'src/app/core/services/postlist.service';
 import { HomePage } from '../home/home.page';
 import { TabsPage } from '../tabs/tabs.page';
 
