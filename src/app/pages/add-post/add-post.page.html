@@ -22,12 +22,12 @@
   <ion-progress-bar type="indeterminate" *ngIf="inprogress"></ion-progress-bar>
 
 
-      <div *ngIf="noImagePost===false">
+      <!-- <div *ngIf="noImagePost===false"> -->
         <ion-input name="file" class="upload" *ngIf="isSelected===false" type="file" accept="video/*,image/*" name="myfile" (change)="onChange($event)"></ion-input>
         <p class="upload-content" *ngIf="isSelected===false"> Upload  <ion-icon name="image-outline" class="img-icon"></ion-icon>   or   <ion-icon name="videocam-outline" class="video-icon"></ion-icon> from gallery</p>
-      </div>
+      <!-- </div> -->
 
-        <div class="selected-post" *ngIf="isSelected && noImagePost===false">
+        <div class="selected-post" *ngIf="isSelected">
         <ion-icon name="close-circle-outline" class="closeIcon" (click)="selectedStatus()" *ngIf="noImagePost===false"></ion-icon>
           <ion-img  class="selecteimage"  [src]="url" *ngIf="format==='image' && url" ></ion-img>
           <video class="selectedvideo" [src]="url" *ngIf="format==='video' && url" controls></video>

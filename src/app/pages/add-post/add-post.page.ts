@@ -78,6 +78,8 @@ export class AddPostPage implements OnInit {
 
     onClickSubmit(data:NgForm) {
       this.inprogress=true;
+      this.noImagePost=true;
+
       console.log(this.accessbility);
       
       
@@ -96,7 +98,6 @@ export class AddPostPage implements OnInit {
           this.accessbility="public";
           this.isSelected=false;
           this.inprogress=false;
-
           var b = document.getElementById("accessbility");
           b.setAttribute("aria-checked","false");
           b.classList.remove("toggle-checked")
