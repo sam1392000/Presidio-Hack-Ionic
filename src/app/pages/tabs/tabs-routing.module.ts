@@ -18,7 +18,7 @@ const routes: Routes = [
       },
       {
         path:'add',
-        loadChildren:() => import('../post/post.module').then(m => m.PostPageModule)
+        loadChildren:() => import('../add-post/add-post.module').then(m => m.AddPostPageModule)
       },
       {
         path:'suggestion',

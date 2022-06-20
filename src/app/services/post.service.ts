@@ -6,15 +6,15 @@ import { HttpClient} from '@angular/common/http';
 })
 export class PostService {
 
-  baseURL="http://localhost:5000/api/";
-  constructor(private httpclient:HttpClient) { }
+  baseURL='http://localhost:5000/api/';
+  constructor(private httpclient: HttpClient) { }
 
-  uploadPost(data:any){
+  uploadPost(data: any){
     console.log(data);
     return this.httpclient.post(`${this.baseURL}addpost/`,data);
   }
 
   getPublicPost(){
-    return this.httpclient.get(`${this.baseURL}publicposts/`);
+    return this.httpclient.get(`${this.baseURL}publicposts`);
   }
 }
