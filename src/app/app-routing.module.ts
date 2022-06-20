@@ -23,6 +23,16 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path: 'add-post',
+    loadChildren: () => import('./pages/add-post/add-post.module').then( m => m.AddPostPageModule)
+  },
+  {
+    path: 'explore',
+    loadChildren: () => import('./pages/explore/explore.module').then( m => m.ExplorePageModule)
+  },
+
+
 ];
 
 @NgModule({

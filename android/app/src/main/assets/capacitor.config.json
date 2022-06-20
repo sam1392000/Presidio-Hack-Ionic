@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "presidioHack",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
