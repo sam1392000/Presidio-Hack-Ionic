@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AnimationController } from '@ionic/angular';
 import { User } from 'src/app/core/interfaces/user';
 import { ApicallsService } from 'src/app/core/services/apicalls.service';
 
@@ -13,14 +14,11 @@ export class ProfilePage implements OnInit {
   stories: any[] = [];
   buttonValue = 'grid';
   buttonItems: any[] = [];
-  posts: any[] = [];
-  user: User;
+  posts: any[]=[];
+  user: any ={};
+  images: any[]=[];
 
-  constructor(private profileapi: ApicallsService) {
-    //this.user={};
-   }
-
-  ngOnInit() {
+  constructor(private profileapi: ApicallsService,private animationCtrl: AnimationController) {
     this.stories = [
       { name: 'New' },
       { name: 'Android', src: 'assets/imgs/circles/android.png' },
@@ -40,26 +38,50 @@ export class ProfilePage implements OnInit {
       {value: 'reels', icon: 'film'},
       {value: 'photos', icon: 'images'},
     ];
-    this.posts = [
-      { id: 1, url: 'assets/imgs/posts/1.jpg'},
-      { id: 2, url: 'assets/imgs/posts/2.jpg'},
-      { id: 3, url: 'assets/imgs/posts/3.png'},
-      { id: 4, url: 'assets/imgs/posts/4.png'},
-      { id: 9, url: 'assets/imgs/posts/5.jpg'},
-      { id: 6, url: 'assets/imgs/posts/6.png'},
-      { id: 5, url: 'assets/imgs/posts/7.png'},
-      { id: 8, url: 'assets/imgs/posts/8.jpg'},
-      { id: 7, url: 'assets/imgs/posts/9.png'},
-      { id: 10, url: 'assets/imgs/posts/10.png'},
-      { id: 11, url: 'assets/imgs/posts/11.png'},
-      { id: 12, url: 'assets/imgs/posts/12.png'},
-    ];
-    this.user = this.profileapi.getUserDetails().subscribe(data=>{this.user=data.data;});
+   }
+
+  ngOnInit() {
+    this.profileapi.getUserDetails().subscribe(data=>{this.user=data.data;console.log(data.data);});
+    this.profileapi.getPost().subscribe(data=>{this.posts=data.data;console.log(data);});
+
+    console.log('without subscribe...'+ this.user);
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    // for(let i=0;i<this.posts.length;i++){
+    //    if(this.isImage(this.posts[i].postUrl)){
+    //     console.log(this.posts[i].imageUrl);
+    //     this.images.push(this.posts[i]);
+    //    }
+    // }
+
   }
+  getPostCount(){
+    if(this.posts!==undefined){
+      console.log(this.posts);
+      return this.posts.length;
+    }
+  }
+  getFollowerCount(){
+    if(this.user!==undefined){
+      console.log(this.user);
+      return this.user.followers.length;
+    }
+  }
+  getFollowingCount(){
+    if(this.user!==undefined){
+      return this.user.following.length;
+    }
+  }
+  shuffleArray(){
+    return  this.posts
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+  }
+
 
   checkScreen() {
     const innerWidth = window.innerWidth;
-    console.log(innerWidth);
+    //console.log(innerWidth);
     switch (true) {
       case 340 > innerWidth:
         return this.checkLength(5.5);
@@ -73,7 +95,14 @@ export class ProfilePage implements OnInit {
         return this.checkLength(9.5);
     }
   }
-
+  checkFormat(url: any,index: number)
+  {
+    if(!this.isImage(url))
+    {
+      return 'video-container';
+    }
+    return 'image-container';
+  }
   checkLength(val) {
     const length = this.stories.length;
     return val < length ? val : length;
@@ -83,4 +112,51 @@ export class ProfilePage implements OnInit {
     console.log(event.detail.value);
     this.buttonValue = event.detail.value;
   }
+
+  isImage(url: string) {
+   // console.log(url);
+    if(url!==undefined){
+      url=url.toLowerCase();
+      // eslint-disable-next-line max-len
+      if(url.includes('.jpg')||url.includes('.jpeg')||url.includes('.png')||url.includes('.webp')||url.includes('.avif')||url.includes('.gif')||url.includes('.svg')){
+        //console.log('image '+url);
+          return true;
+      }else{
+        //console.log('Not image '+url);
+        return false;
+      }
+    }
+  }
+
+  loadThumbnail(url: string){
+    return url+'#t=2';
+  }
+  enterAnimation = (baseEl: HTMLElement) => {
+    const root = baseEl.shadowRoot;
+
+    const backdropAnimation = this.animationCtrl
+      .create()
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .addElement(root.querySelector('ion-backdrop')!)
+      .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+
+    const wrapperAnimation = this.animationCtrl
+      .create()
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .addElement(root.querySelector('.modal-wrapper')!)
+      .keyframes([
+        { offset: 0, opacity: '0', transform: 'scale(0)' },
+        { offset: 1, opacity: '0.99', transform: 'scale(1)' },
+      ]);
+
+    return this.animationCtrl
+      .create()
+      .addElement(baseEl)
+      .easing('ease-out')
+      .duration(500)
+      .addAnimation([backdropAnimation, wrapperAnimation]);
+  };
+
+  leaveAnimation = (baseEl: HTMLElement) => this.enterAnimation(baseEl).direction('reverse');
+
 }

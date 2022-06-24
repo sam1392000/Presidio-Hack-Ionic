@@ -25,10 +25,12 @@ export class ExplorePage implements OnInit {
   }
 
   isImage(url: string) {
-    if(url.includes('.mp4')){
+    if(url!==undefined){
+      if(url.includes('.mp4')){
         return false;
-    }else{
-      return true;
+      }else{
+        return true;
+      }
     }
   }
 

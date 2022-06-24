@@ -31,7 +31,7 @@
               </div>
           </div>
 
-            <div class="post-container video-post"   *ngIf="!isImage(post.postUrl) && post.postUrl" >
+            <div class="post-container video-post"   *ngIf="post.postUrl && !isImage(post.postUrl)" >
               <video  preload="metadata" width="100%" height="100%">
                   <source src={{loadThumbnail(post.postUrl)}}  alt="post video" autoplay muted  controls >
               </video>

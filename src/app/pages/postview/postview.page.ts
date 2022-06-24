@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Comments } from 'src/app/core/interfaces/comments';
 import { Post } from 'src/app/core/interfaces/post';
+import { User } from 'src/app/core/interfaces/user';
 import { CommentServiceService } from 'src/app/core/services/comment-service.service';
 import { PostlistService } from 'src/app/core/services/postlist.service';
 import { HomePage } from '../home/home.page';
@@ -14,15 +15,12 @@ import { TabsPage } from '../tabs/tabs.page';
 })
 export class PostviewPage implements OnInit {
 
-  @Input() postId: string;
-  post: Post;
+  @Input() postselected: any;
   select: string[]=[];
-  comment: Comments[]=[];
+  comment: any;
   usercomment: string;
   constructor(private posts: PostlistService,private comments: CommentServiceService,private modalCtrl: ModalController) {
-   // this.post = this.posts.findByPostId(this.postId);
-  //  this.post = this.posts.findByPostId(this.postId);
-    this.comment = this.comments.commentCount(this.postId);
+    console.log(this.postselected);
    }
 
   async back(){
@@ -33,34 +31,60 @@ export class PostviewPage implements OnInit {
   }
 
   ngOnInit() {
-    this.post = this.posts.findByPostId(this.postId);
-    this.select = this.posts.generateLikesList();
-    this.posts.likeMessage.subscribe(list=> this.select =list);
-    this.comment = this.comments.commentCount(this.post.postUrl);
-    this.comments.commentMessage.subscribe(comments=>this.comment=comments);
-    console.log(this.comment.length);
-    this.comment.forEach(e=>{console.log(e);});
+    console.log(this.postselected.comments.user);
+    // eslint-disable-next-line no-underscore-dangle
+    this.comments.getpost(this.postselected._id).subscribe((res: any)=>{this.comment=res.data.comments;
+      console.log(res.data.comments);});
+    //this.comment = this.postselected.comments;
   }
 
-  likeselect(post: Post){
-    console.log('Like Clicked');
-    this.posts.likeCount(post);
+  likeselect(){
+    console.log('Like selected..');
+    return this.postselected.likes.length;
   }
-  commentCount(post: Post){
-    return this.comments.commentCount(post.postUrl).length;
+  commentCount(){
+    return this.postselected.comments.length;
   }
   addComment(){
+    const userid: User={
+      name: 'Ram',
+      userid: '8648279',
+      emailid: 'random@gmail.com',
+      profilepic: '',
+      description: 'Enjoy the way you are!',
+      followers: [],
+      following: [],
+    };
      const cmt: Comments={
-      post: this.post.postUrl,
-      user: 'user01',
+      // eslint-disable-next-line no-underscore-dangle
+      post: this.postselected._id,
+      user: '62aeeed26b0657ec29e03f84',
       comment: this.usercomment,
      };
-     this.comments.addComment(cmt);
-     this.comment = this.comments.commentCount(this.post.postUrl);
+     this.comment.push(cmt);
+     this.comments.uploadComment(cmt).subscribe(res=>{console.log(res);});
+    // this.comment = this.comments.commentCount(this.postselected.postUrl);
      this.usercomment='';
   }
   likeselectForComment(comment: Comments){
 
   }
+  isImage(url: string) {
+    if(url!==undefined){
+      url=url.toLowerCase();
+      // eslint-disable-next-line max-len
+      if(url.includes('.jpg')||url.includes('.jpeg')||url.includes('.png')||url.includes('.webp')||url.includes('.avif')||url.includes('.gif')||url.includes('.svg')){
+          return true;
+      }else{
+        return false;
+      }
+    }
+    return false;
+  }
+
+  loadThumbnail(url: string){
+    return url+'#t=2';
+  }
+
 
 }

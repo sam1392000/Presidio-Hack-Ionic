@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Comments } from '../interfaces/comments';
@@ -6,40 +7,19 @@ import { Comments } from '../interfaces/comments';
   providedIn: 'root'
 })
 export class CommentServiceService {
-  commentList: Comments[]=[];
-  constructor() {
+  baseURL='http://localhost:5000/api/';
+  constructor(private httpclient: HttpClient) { }
 
+  uploadComment(data: any){
+    console.log(data);
+    return this.httpclient.post(`${this.baseURL}add/comment`,data);
   }
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  private subjectSource = new Subject<Comments[]>();
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  commentMessage = this.subjectSource.asObservable();
-
-  updateSubject(comments: Comments[]){
-    this.subjectSource.next(this.commentList);
+  getpost(id: any){
+    return this.httpclient.get(`${this.baseURL}getpost/${id}`);
   }
-
-  addComment(comment: Comments){
-    this.commentList.push(comment);
-    this.updateSubject(this.commentList);
-    console.log(this.commentList.toString+' '+this.commentList.length);
-  }
-  generateComments(postId: string): Comments[]{
-    console.log('In genertae post..'+this.commentList.length);
-    return this.commentCount(postId);
-  }
-  commentCount(postId: string): Comments[]{
-    const count = 0;
-    // eslint-disable-next-line prefer-const
-    let commentLists =[];
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-    this.commentList.forEach(function(p){
-       if(p.post===postId){
-        commentLists.push(p);
-       }
-    });
-    //commentLists.forEach(e=>{console.log(e);});
-     return commentLists;
+  addLike(data: any){
+    console.log(data);
+    return this.httpclient.post(`${this.baseURL}like/`,data);
   }
 
 }
